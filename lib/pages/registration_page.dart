@@ -30,7 +30,8 @@ class _RegistrationPageState extends State<RegistrationPage>{
           children: [
             Container(
               height: 150,
-              child: HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
+              child: HeaderWidget(150, false, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+                radius: 20,)),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(25, 50, 25, 10),
@@ -82,14 +83,14 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           child: TextFormField(
                             decoration: ThemeHelper().textInputDecoration('First Name', 'Enter your first name'),
                           ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
                         SizedBox(height: 30,),
                         Container(
                           child: TextFormField(
                             decoration: ThemeHelper().textInputDecoration('Last Name', 'Enter your last name'),
                           ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
                         SizedBox(height: 20.0),
                         Container(
@@ -103,7 +104,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               return null;
                             },
                           ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
                         SizedBox(height: 20.0),
                         Container(
@@ -119,7 +120,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               return null;
                             },
                           ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
                         SizedBox(height: 20.0),
                         Container(
@@ -134,7 +135,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                               return null;
                             },
                           ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
                         SizedBox(height: 15.0),
                         FormField<bool>(
@@ -175,7 +176,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                         ),
                         SizedBox(height: 20.0),
                         Container(
-                          decoration: ThemeHelper().buttonBoxDecoration(context),
+                          decoration: ThemeHelper().buttonBoxDecoration(context,'',''),
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
                             child: Padding(
@@ -216,7 +217,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Google Plus","You tap on GooglePlus social icon.",context);
+                                      return ThemeHelper().alertDialog("Google Plus","You tap on GooglePlus social icon.",context);
                                     },
                                   );
                                 });
@@ -240,7 +241,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
+                                      return ThemeHelper().alertDialog("Twitter","You tap on Twitter social icon.",context);
                                     },
                                   );
                                 });
@@ -256,7 +257,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Facebook",
+                                      return ThemeHelper().alertDialog("Facebook",
                                           "You tap on Facebook social icon.",
                                           context);
                                     },

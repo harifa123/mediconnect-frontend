@@ -4,31 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/core/services/apiService.dart';
 import 'package:flutter_login_ui/models/userModel.dart';
-import 'package:flutter_login_ui/models/jwtResponseModel.dart';
-import 'package:flutter_alert/flutter_alert.dart';
 import 'forgot_password_page.dart';
 import 'profile_page.dart';
 import 'registration_page.dart';
 import 'widgets/header_widget.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-);
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class StudLoginPage extends StatefulWidget {
+  const StudLoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _StudLoginPageState createState() => _StudLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _StudLoginPageState extends State<StudLoginPage> {
   double _headerHeight = 250;
   Key _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
@@ -48,10 +37,6 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: _headerHeight,
-              child: HeaderWidget(_headerHeight, true, Icons.person),
-            ),
             SafeArea(
               child: Container(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -60,15 +45,17 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       Text(
-                        'Welcome GoPlanners!',
+                        'DocQuik!',
                         style: TextStyle(
                             fontSize: 60,
                             color: Colors.indigoAccent,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
+                        'Student Login',
+                        style: TextStyle(color: Colors.grey,
+                          fontSize: 20,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 30.0),
                       Form(
@@ -78,22 +65,16 @@ class _LoginPageState extends State<LoginPage> {
                               Container(
                                 child: TextField(
                                   controller: _emailController,
-                                  decoration: ThemeHelper().textInputDecoration(
-                                      'User Name', 'Enter your user name'),
-                                ),
-                                decoration:
-                                    ThemeHelper().inputBoxDecorationShaddow(),
+                                  decoration: ThemeHelper().textInputDecoration('User Name', 'Enter your user name')),
+                                //decoration: ThemeHelper().inputBoxDecorationShadow(),
                               ),
                               SizedBox(height: 30.0),
                               Container(
                                 child: TextField(
                                   controller: _passwordController,
                                   obscureText: true,
-                                  decoration: ThemeHelper().textInputDecoration(
-                                      'Password', 'Enter your password'),
-                                ),
-                                decoration:
-                                    ThemeHelper().inputBoxDecorationShaddow(),
+                                  decoration: ThemeHelper().textInputDecoration('Password', 'Enter your password'),),
+                                //decoration: ThemeHelper().inputBoxDecorationShadow(),
                               ),
                               SizedBox(height: 15.0),
                               Container(
@@ -118,12 +99,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               Container(
                                 decoration:
-                                    ThemeHelper().buttonBoxDecoration(context),
+                                ThemeHelper().buttonBoxDecoration(context,'',''),
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                    EdgeInsets.fromLTRB(40, 10, 40, 10),
                                     child: Text(
                                       'Sign In'.toUpperCase(),
                                       style: TextStyle(
@@ -135,8 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () async {
                                     await ApiService()
                                         .loginUser(User(
-                                            email: _emailController.text,
-                                            password: _passwordController.text))
+                                        email: _emailController.text,
+                                        password: _passwordController.text))
                                         .then((data) {
                                       if (data.access_token!.isNotEmpty) {
                                         Navigator.pushReplacement(
@@ -172,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                       },
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).accentColor),
+                                        color: Theme.of(context).hintColor),
                                   ),
                                 ])),
                               ),
@@ -184,6 +165,25 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void showAlert({BuildContext? context, String? title}) {
+    showDialog(
+      context: context!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title!),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

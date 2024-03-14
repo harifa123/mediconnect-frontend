@@ -5,20 +5,21 @@ import 'package:flutter/material.dart';
 class HeaderWidget extends StatefulWidget {
   final double _height;
   final bool _showIcon;
-  final IconData _icon;
+  final Widget _logo;
 
-  const HeaderWidget(this._height, this._showIcon, this._icon, {Key? key}) : super(key: key);
+  HeaderWidget(this._height, this._showIcon, this._logo);
 
   @override
-  _HeaderWidgetState createState() => _HeaderWidgetState(_height, _showIcon, _icon);
+  _HeaderWidgetState createState() =>
+      _HeaderWidgetState(_height, _showIcon, _logo);
 }
 
 class _HeaderWidgetState extends State<HeaderWidget> {
   double _height;
   bool _showIcon;
-  IconData _icon;
+  Widget _logo;
 
-  _HeaderWidgetState(this._height, this._showIcon, this._icon);
+  _HeaderWidgetState(this._height, this._showIcon, this._logo);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 gradient: new LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor.withOpacity(0.4),
-                      Theme.of(context).accentColor.withOpacity(0.7),
+                      Theme.of(context).hintColor.withOpacity(0.7),
                     ],
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
@@ -60,7 +61,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 gradient: new LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor.withOpacity(0.4),
-                      Theme.of(context).accentColor.withOpacity(0.4),
+                      Theme.of(context).hintColor.withOpacity(0.4),
                     ],
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
@@ -84,7 +85,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 gradient: new LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor,
-                      Theme.of(context).accentColor,
+                      Theme.of(context).hintColor,
                     ],
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
@@ -125,16 +126,12 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     ),
                     border: Border.all(width: 5, color: Colors.white),
                   ),
-                  child: Icon(
-                    _icon,
-                    color: Colors.white,
-                    size: 40.0,
+                  child:
+                    _logo,
                   ),
                 ),
               ),
             ),
-          ),
-
         ],
       ),
     );

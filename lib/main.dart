@@ -28,10 +28,11 @@ class LoginUiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Login UI',
       theme: ThemeData(
         primaryColor: _primaryColor,
-        accentColor: _accentColor,
+        hintColor: _accentColor,
         scaffoldBackgroundColor: Colors.grey.shade100,
         primarySwatch: Colors.grey,
       ),

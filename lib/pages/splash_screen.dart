@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/ui_page_logins.dart';
 
 import 'login_page.dart';
 
@@ -18,10 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _SplashScreenState(){
 
-    new Timer(const Duration(milliseconds: 2000), (){
+    new Timer(const Duration(milliseconds: 4000), (){
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+        MaterialPageRoute(builder: (context) => UiPage()), (route) => false);
       });
     });
 
@@ -41,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
-          colors: [Theme.of(context).accentColor, Theme.of(context).primaryColor],
+          colors: [Theme.of(context).hintColor, Theme.of(context).primaryColor],
           begin: const FractionalOffset(0, 0),
           end: const FractionalOffset(1.0, 0.0),
           stops: [0.0, 1.0],
@@ -57,7 +58,12 @@ class _SplashScreenState extends State<SplashScreen> {
             width: 140.0,
             child: Center(
               child: ClipOval(
-                //child: Icon(Icons.android_outlined, size: 128,), //put your logo here
+                child: Image.asset(
+                  'images/logo_sqaure.png',
+                  fit: BoxFit.cover,
+                  height: 300,
+                  width: 300,
+                ),
               ),
             ),
             decoration: BoxDecoration(

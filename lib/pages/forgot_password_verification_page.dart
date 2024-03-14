@@ -30,7 +30,8 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
               Container(
                 height: _headerHeight,
                 child: HeaderWidget(
-                    _headerHeight, true, Icons.privacy_tip_outlined),
+                    _headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+                  radius: 20,)),
               ),
               SafeArea(
                 child: Container(
@@ -103,7 +104,7 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return ThemeHelper().alartDialog("Successful",
+                                            return ThemeHelper().alertDialog("Successful",
                                                 "Verification code resend successful.",
                                                 context);
                                           },
@@ -119,7 +120,7 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
                             ),
                             SizedBox(height: 40.0),
                             Container(
-                              decoration: _pinSuccess ? ThemeHelper().buttonBoxDecoration(context):ThemeHelper().buttonBoxDecoration(context, "#AAAAAA","#757575"),
+                              decoration: _pinSuccess ? ThemeHelper().buttonBoxDecoration(context,'',''):ThemeHelper().buttonBoxDecoration(context, "#AAAAAA","#757575"),
                               child: ElevatedButton(
                                 style: ThemeHelper().buttonStyle(),
                                 child: Padding(

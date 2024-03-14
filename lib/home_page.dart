@@ -68,7 +68,8 @@ class _HomePageState extends State<HomePage>{
           children: [
             Container(
               height: _headerHeight,
-              child: HeaderWidget(_headerHeight, true, Icons.person), 
+              child: HeaderWidget(_headerHeight, true, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+                radius: 20,)),
             ),
             SafeArea(
               child: Container( 
@@ -91,9 +92,9 @@ class _HomePageState extends State<HomePage>{
                           children: [
                             Container(
                               child: TextField(
-                                decoration: ThemeHelper().textInputDecoration('search'),
+                                decoration: ThemeHelper().textInputDecoration('search', ''),
                               ),
-                              decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                              decoration: ThemeHelper().inputBoxDecorationShadow(),
                             ),
                             SizedBox(height: 20.0),
                             SizedBox(height: 15.0),

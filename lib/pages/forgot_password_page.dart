@@ -28,7 +28,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             children: [
               Container(
                 height: _headerHeight,
-                child: HeaderWidget(_headerHeight, true, Icons.password_rounded),
+                child: HeaderWidget(_headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+                  radius: 20,)),
               ),
               SafeArea(
                 child: Container(
@@ -89,11 +90,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   return null;
                                 },
                               ),
-                              decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                              decoration: ThemeHelper().inputBoxDecorationShadow(),
                             ),
                             SizedBox(height: 40.0),
                             Container(
-                              decoration: ThemeHelper().buttonBoxDecoration(context),
+                              decoration: ThemeHelper().buttonBoxDecoration(context,'',''),
                               child: ElevatedButton(
                                 style: ThemeHelper().buttonStyle(),
                                 child: Padding(
@@ -130,7 +131,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       ..onTap = () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => LoginPage()),
+                                          MaterialPageRoute(builder: (context) => StudLoginPage()),
                                           
                                         );
                                       },

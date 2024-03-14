@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage>{
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).accentColor,]
+                  colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).hintColor,]
               )
           ),
         ),
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage>{
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     stops: [0.0, 1.0],
-                    colors: [ Theme.of(context).primaryColor,Theme.of(context).accentColor,],
+                    colors: [ Theme.of(context).primaryColor,Theme.of(context).hintColor,],
                   ),
                 ),
                 child: Container(
@@ -141,7 +141,9 @@ class _ProfilePageState extends State<ProfilePage>{
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Container(height: 100, child: HeaderWidget(100,false,Icons.house_rounded),),
+            Container(height: 100, child: HeaderWidget(100,false,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+          radius: 20,)),
+        ),
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
