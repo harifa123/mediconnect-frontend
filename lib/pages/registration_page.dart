@@ -1,25 +1,58 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/pages/widgets/header_widget.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_login_ui/pages/TemporaryPasswordPage.dart';
+import '../services/studentService.dart';
 
-import 'profile_page.dart';
-
-class RegistrationPage extends  StatefulWidget{
+class RegistrationPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-     return _RegistrationPageState();
-  }
+  _RegistrationPageState createState() => _RegistrationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage>{
-
+class _RegistrationPageState extends State<RegistrationPage> {
+  double _headerHeight = 250;
   final _formKey = GlobalKey<FormState>();
-  bool checkedValue = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController admissionNumberController = TextEditingController();
   bool checkboxValue = false;
+
+  String? userId; // Define userId variable as nullable
+
+  void _register() async {
+    if (_formKey.currentState!.validate()) {
+      final email = emailController.text;
+      final admissionNumber = admissionNumberController.text;
+
+      try {
+        final response = await ApiService.registerRequest(email, admissionNumber);
+        final String? successMessage = response['successMessage']; // Extract success message
+        final String? userId = response['userId']; // Extract userId
+
+        if (successMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(successMessage),
+            backgroundColor: Colors.green,
+          ));
+        }
+
+        if (userId != null) {
+          setState(() {
+            this.userId = userId; // Set userId if response contains it
+          });
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => TemporaryPasswordPage(userId: userId)), // Pass userId to TemporaryPasswordPage
+                (Route<dynamic> route) => false,
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +63,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
           children: [
             Container(
               height: 150,
-              child: HeaderWidget(150, false, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
-                radius: 20,)),
+              child: HeaderWidget(150, false, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'), radius: 20)),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(25, 50, 25, 10),
@@ -43,229 +75,113 @@ class _RegistrationPageState extends State<RegistrationPage>{
                     key: _formKey,
                     child: Column(
                       children: [
-                        GestureDetector(
-                          child: Stack(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                      width: 5, color: Colors.white),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 20,
-                                      offset: const Offset(5, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.grey.shade300,
-                                  size: 80.0,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(80, 80, 0, 0),
-                                child: Icon(
-                                  Icons.add_circle,
-                                  color: Colors.grey.shade700,
-                                  size: 25.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30,),
+                        Stack(
+                          children: [
+                            Container(
+                              // height: _headerHeight,
+                              // width: 300,
+                              child: HeaderWidget(_headerHeight, true, CircleAvatar(
+                                backgroundImage: AssetImage('images/logo_letter_box_med.png'),
+                                radius: 60,
+                                backgroundColor: Colors.white,
+                              )),
+                            ),
+              Container(
+                margin: EdgeInsets.fromLTRB(25, _headerHeight - 50, 25, 10), // Adjust margin.top based on logo height
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Text(
+                      "SignUp!",
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigoAccent), // Customize text style as needed
+                    ),
+
+
+                          ],
+                        ),),]),
+                        SizedBox(height: 50),
                         Container(
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration('First Name', 'Enter your first name'),
-                          ),
-                          decoration: ThemeHelper().inputBoxDecorationShadow(),
-                        ),
-                        SizedBox(height: 30,),
-                        Container(
-                          child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration('Last Name', 'Enter your last name'),
-                          ),
-                          decoration: ThemeHelper().inputBoxDecorationShadow(),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          child: TextFormField(
+
+                            controller: emailController,
                             decoration: ThemeHelper().textInputDecoration("E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (val) {
-                              if(!(val!.isEmpty) && !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
-                                return "Enter a valid email address";
+                              if (val!.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(val)) {
+                                return 'Enter a valid email address';
                               }
                               return null;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 20),
                         Container(
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration(
-                                "Mobile Number",
-                                "Enter your mobile number"),
-                            keyboardType: TextInputType.phone,
-                            validator: (val) {
-                              if(!(val!.isEmpty) && !RegExp(r"^(\d+)*$").hasMatch(val)){
-                                return "Enter a valid phone number";
-                              }
-                              return null;
-                            },
-                          ),
-                          decoration: ThemeHelper().inputBoxDecorationShadow(),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          child: TextFormField(
-                            obscureText: true,
-                            decoration: ThemeHelper().textInputDecoration(
-                                "Password*", "Enter your password"),
+                            controller: admissionNumberController,
+                            decoration: ThemeHelper().textInputDecoration('Admission Number', 'Enter your admission number'),
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return "Please enter your password";
+                                return 'Enter your admission number';
                               }
                               return null;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShadow(),
                         ),
-                        SizedBox(height: 15.0),
-                        FormField<bool>(
-                          builder: (state) {
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                        value: checkboxValue,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            checkboxValue = value!;
-                                            state.didChange(value);
-                                          });
-                                        }),
-                                    Text("I accept all terms and conditions.", style: TextStyle(color: Colors.grey),),
-                                  ],
-                                ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    state.errorText ?? '',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Theme.of(context).errorColor,fontSize: 12,),
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                          validator: (value) {
-                            if (!checkboxValue) {
-                              return 'You need to accept terms and conditions';
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 20),
+                        // FormField<bool>(
+                        //   builder: (state) {
+                        //     return Column(
+                        //       children: <Widget>[
+                        //         Row(
+                        //           children: <Widget>[
+                        //             // Checkbox(
+                        //             //   value: checkboxValue,
+                        //             //   onChanged: (value) {
+                        //             //     setState(() {
+                        //             //       checkboxValue = value!;
+                        //             //       state.didChange(value);
+                        //             //     });
+                        //             //   },
+                        //             // ),
+                        //             // Text("I accept all terms and conditions.", style: TextStyle(color: Colors.grey)),
+                        //           ],
+                        //         ),
+                        //         Container(
+                        //           alignment: Alignment.centerLeft,
+                        //           child: Text(
+                        //             state.errorText ?? '',
+                        //             textAlign: TextAlign.left,
+                        //             style: TextStyle(color: Theme.of(context).errorColor, fontSize: 12),
+                        //           ),
+                        //         )
+                        //       ],
+                        //     );
+                        //   },
+                        //   validator: (value) {
+                        //     if (!checkboxValue) {
+                        //       return 'You need to accept terms and conditions';
+                        //     } else {
+                        //       return null;
+                        //     }
+                        //   },
+                        // ),
+                        // SizedBox(height: 20),
                         Container(
-                          decoration: ThemeHelper().buttonBoxDecoration(context,'',''),
+                          decoration: ThemeHelper().buttonBoxDecoration(context, '', ''),
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
+                            onPressed: _register,
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: Text(
-                                "Register".toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                "Get otp".toUpperCase(),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                               ),
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfilePage()
-                                    ),
-                                        (Route<dynamic> route) => false
-                                );
-                              }
-                            },
                           ),
-                        ),
-                        SizedBox(height: 30.0),
-                        Text("Or create account using social media",  style: TextStyle(color: Colors.grey),),
-                        SizedBox(height: 25.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.googlePlus, size: 35,
-                                color: HexColor("#EC2D2F"),),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alertDialog("Google Plus","You tap on GooglePlus social icon.",context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(width: 30.0,),
-                            GestureDetector(
-                              child: Container(
-                                padding: EdgeInsets.all(0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(width: 5, color: HexColor("#40ABF0")),
-                                  color: HexColor("#40ABF0"),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.twitter, size: 23,
-                                  color: HexColor("#FFFFFF"),),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alertDialog("Twitter","You tap on Twitter social icon.",context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(width: 30.0,),
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.facebook, size: 35,
-                                color: HexColor("#3E529C"),),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alertDialog("Facebook",
-                                          "You tap on Facebook social icon.",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -278,5 +194,4 @@ class _RegistrationPageState extends State<RegistrationPage>{
       ),
     );
   }
-
 }

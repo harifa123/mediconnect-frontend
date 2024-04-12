@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/adminlogin.dart';
 import 'login_doc_page.dart';
 import 'login_page.dart';
 import 'widgets/header_widget.dart';
@@ -41,7 +42,7 @@ class _UiPageState extends State<UiPage> {
             child: Container(
               height: _headerHeight,
               child: HeaderWidget(_headerHeight, true, CircleAvatar(
-                backgroundImage: AssetImage('images/logo_sqaure.png'),
+                backgroundImage: AssetImage('images/logo_letter_box_med.png'),
                 radius: 60,
                 backgroundColor: Colors.white,
               )),
@@ -52,7 +53,8 @@ class _UiPageState extends State<UiPage> {
               controller: _pageController, // Assign PageController to PageView
               children: [
                 StudLoginPage(), // First page for student login
-                DocLoginPage(), // Second page for doctor login
+                DocLoginPage(),
+                AdminLoginPage()// Second page for doctor login
               ],
             ),
           ),
@@ -70,6 +72,12 @@ class _UiPageState extends State<UiPage> {
                   _pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.ease); // Navigate to second page (Doctor Login)
                 },
                 child: Text('Doctor Login'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _pageController.animateToPage(2, duration: Duration(milliseconds: 300), curve: Curves.ease); // Navigate to second page (Doctor Login)
+                },
+                child: Text('Admin Login'),
               ),
             ],
           ),

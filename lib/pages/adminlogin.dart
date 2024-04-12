@@ -2,19 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/models/userModel.dart';
+import 'package:flutter_login_ui/pages/addstudentpage.dart';
 import 'package:flutter_login_ui/pages/student_profile_page.dart';
 import 'forgot_password_page.dart';
 import 'doctor_profile_page.dart';
 import 'widgets/header_widget.dart';
 
-class DocLoginPage extends StatefulWidget {
-  const DocLoginPage({Key? key}) : super(key: key);
+class AdminLoginPage extends StatefulWidget {
+  const AdminLoginPage({Key? key}) : super(key: key);
 
   @override
-  _DocLoginPageState createState() => _DocLoginPageState();
+  _AdminLoginPageState createState() => _AdminLoginPageState();
 }
 
-class _DocLoginPageState extends State<DocLoginPage> {
+class _AdminLoginPageState extends State<AdminLoginPage> {
   double _headerHeight = 250;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -48,7 +49,7 @@ class _DocLoginPageState extends State<DocLoginPage> {
                       ),
                     ),
                     Text(
-                      'Doctor Login',
+                      'Admin Login',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 20,
@@ -145,11 +146,11 @@ class _DocLoginPageState extends State<DocLoginPage> {
     if (_emailController.text.isEmpty || !_isValidEmail(_emailController.text)) {
       showAlert(context: context, title: 'Invalid email format. Please enter a valid email.');
     }
-    else if (_emailController.text == 'doc@gmail.com' && _passwordController.text == 'doc@123') {
+    else if (_emailController.text == 'admin@gmail.com' && _passwordController.text == 'adm@123') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => DocApp(),
+          builder: (context) => AddStudentPage(),
         ),
       );
     } else {

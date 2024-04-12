@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
+import 'package:flutter_login_ui/pages/student_profile_page.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
-import 'profile_page.dart';
+import 'doctor_profile_page.dart';
 import 'widgets/header_widget.dart';
 
 class ForgotPasswordVerificationPage extends StatefulWidget {
@@ -27,12 +28,12 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: _headerHeight,
-                child: HeaderWidget(
-                    _headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
-                  radius: 20,)),
-              ),
+              // Container(
+              //   height: _headerHeight,
+              //   child: HeaderWidget(
+              //       _headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+              //     radius: 20,)),
+              // ),
               SafeArea(
                 child: Container(
                   margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
@@ -138,7 +139,7 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
                                 onPressed: _pinSuccess ? () {
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (context) => ProfilePage()
+                                          builder: (context) => MyApp()
                                       ),
                                           (Route<dynamic> route) => false
                                   );

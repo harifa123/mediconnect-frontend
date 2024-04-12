@@ -66,11 +66,11 @@ class _HomePageState extends State<HomePage>{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: _headerHeight,
-              child: HeaderWidget(_headerHeight, true, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
-                radius: 20,)),
-            ),
+            // Container(
+            //   height: _headerHeight,
+            //   child: HeaderWidget(_headerHeight, true, CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+            //     radius: 20,)),
+            // ),
             SafeArea(
               child: Container( 
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),

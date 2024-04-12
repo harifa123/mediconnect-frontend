@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'profile_page.dart';
+import 'doctor_profile_page.dart';
 
 class CardDesign extends StatefulWidget {
   const CardDesign({

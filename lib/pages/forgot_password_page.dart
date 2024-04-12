@@ -26,11 +26,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: _headerHeight,
-                child: HeaderWidget(_headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
-                  radius: 20,)),
-              ),
+              // Container(
+              //   height: _headerHeight,
+              //   child: HeaderWidget(_headerHeight, true,CircleAvatar(backgroundImage: AssetImage('images/logo_letter.png'),
+              //     radius: 20,)),
+              // ),
               SafeArea(
                 child: Container(
                   margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
