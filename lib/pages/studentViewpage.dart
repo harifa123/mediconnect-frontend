@@ -88,15 +88,15 @@ class _StudentDetailsPageState extends State<StudentDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Name: ${_student!.name ?? 'N/A'}', style: TextStyle(
-                  fontSize: 23,
+                  fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),),
               Text('Admission Number: ${_student!.admissionNumber ?? 'N/A'}',
-                style: TextStyle(fontSize: 23,
+                style: TextStyle(fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),),
               Text('Email: ${_student!.email ?? 'N/A'}', style: TextStyle(
-                  fontSize: 23,
+                  fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),),
             ],

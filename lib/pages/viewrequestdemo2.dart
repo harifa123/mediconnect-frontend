@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
+import 'package:flutter_login_ui/pages/doctor_profile_page.dart';
 import 'package:flutter_login_ui/pages/prescription.dart';
 import 'package:flutter_login_ui/services/student_request_service2.dart';
+import 'package:http/http.dart' as http;
+import 'dart:typed_data';
+import 'package:universal_html/html.dart' as html;
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class StudentRequestsScreen extends StatefulWidget {
   @override
@@ -45,17 +51,69 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
     );
     if (picked != null) {
       final selectedDate = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
-      print('Selected date: $_selectedDate'); // Add logging
       setState(() {
         _selectedDate = selectedDate;
       });
-      if (_selectedDate != null) { // Check if _selectedDate is not null
+      if (_selectedDate != null) {
         _fetchStudentRequestsForDate(selectedDate);
       }
     }
   }
 
+  Future<void> _downloadPdf() async {
+    try {
+      if (_selectedDate == null) {
+        // Download all requests
+        _downloadPdfForAll();
+      } else {
+        // Download requests for the selected date
+        final url = Uri.parse('http://localhost:3006/api/student/download');
+        final response = await http.post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'date': _selectedDate}),
+        );
 
+        if (response.statusCode == 200) {
+          final pdfBytes = response.bodyBytes;
+          final blob = html.Blob([pdfBytes]);
+          final url = html.Url.createObjectUrlFromBlob(blob);
+          final anchor = html.AnchorElement(href: url)
+            ..setAttribute('download', 'student_requests.pdf')
+            ..click();
+          html.Url.revokeObjectUrl(url);
+        } else if (response.statusCode == 404) {
+          // No data found for the specified date
+          print('No file to download for the selected date.');
+        } else {
+          // Handle other errors
+          print('Error downloading PDF: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      // Handle any errors
+      print('Error downloading PDF: $e');
+    }
+  }
+
+
+  Future<void> _downloadPdfForAll() async {
+    final url = Uri.parse('http://localhost:3006/api/student/download');
+    final response = await http.post(url);
+
+    if (response.statusCode == 200) {
+      final pdfBytes = response.bodyBytes;
+      final blob = html.Blob([pdfBytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.AnchorElement(href: url)
+        ..setAttribute('download', 'student_requests.pdf')
+        ..click();
+      html.Url.revokeObjectUrl(url);
+    } else {
+      // Handle errors
+      print('Error downloading PDF: ${response.statusCode}');
+    }
+  }
 
   Future<void> _resetDate() async {
     setState(() {
@@ -68,22 +126,32 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Student Requests',style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold ,color: Colors.white),),backgroundColor: Colors.transparent, // Make AppBar background transparent
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.purple.withOpacity(0.6),
-              Colors.indigo.withOpacity(0.6),
-              Colors.blueAccent.withOpacity(0.6),
-
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+        title: Text(
+          'Student Requests',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.transparent,
+        // Make AppBar background transparent
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.withOpacity(0.6),
+                Colors.indigo.withOpacity(0.6),
+                Colors.blueAccent.withOpacity(0.6),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
         ),
-      ),
-      centerTitle: true,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: Colors.white,),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>DocApp())); // Navigate back to the previous page
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.calendar_today),
@@ -93,7 +161,13 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
             icon: Icon(Icons.refresh),
             onPressed: () => _resetDate(),
           ),
+          IconButton(
+            icon: Icon(Icons.download),
+            onPressed: () => _downloadPdf(),
+          ),
         ],
+
+
       ),
       body: FutureBuilder<List<dynamic>>(
         future: _studentRequests,
@@ -110,77 +184,70 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final studentRequest = snapshot.data![index];
-                // String buttonLabel = 'Approve'; // Default label
-                // Color buttonColor = Colors.blue;
-                // if (studentRequest[status] == 'Approved') {
-                //   buttonLabel = 'add prescription';
-                //   buttonColor = Colors.green;
-                // } else if (studentRequest.status == 'add prescription') {
-                //   buttonLabel = 'Done';
-                //   buttonColor = Colors.orange;
-                // }
-                SizedBox(height: 40,);
                 return Container(
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.indigo),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                child:  ListTile(
-                  title: Text("Name: " + studentRequest['name'],style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold),),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Admission Number: ${studentRequest['admissionNumber']}',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold),),
-                      Text('Token: ${studentRequest['token']}',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold),),
-                      Text('Status: ${studentRequest['status']}',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold),),
-                    ],
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.indigo),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  trailing: Container(
-                    // decoration: ThemeHelper().buttonBoxDecoration(context, '', ''),
-                decoration: BoxDecoration(
-                gradient: LinearGradient(
-                colors: [
-                Colors.purple.withOpacity(0.6),
-                Colors.indigo.withOpacity(0.6),
-                Colors.blueAccent.withOpacity(0.6),
-                // Example opacity value (0.8)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(30),
-                ),
-                    child: ElevatedButton(
-                      style: ThemeHelper().buttonStyle(),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text(
-                          studentRequest['status'] == 'Done' ? 'Done' : 'Add prescription',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                  child: ListTile(
+                    title: Text(
+                      "Name: " + studentRequest['name'],
+                      style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Admission Number: ${studentRequest['admissionNumber']}',
+                          style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Token: ${studentRequest['token']}',
+                          style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Status: ${studentRequest['status']}',
+                          style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.purple.withOpacity(0.6),
+                            Colors.indigo.withOpacity(0.6),
+                            Colors.blueAccent.withOpacity(0.6),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: ElevatedButton(
+                        style: ThemeHelper().buttonStyle(),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Text(
+                            studentRequest['status'] == 'Done' ? 'Done' : 'Add prescription',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      onPressed: () async {
-    // if (studentRequest['status'] == 'add prescription') {
-    //   // Change the status to 'Done'
-    //   setState(() {
-    //     studentRequest['status'] = 'Done';
-    //   });
-    // }
-                          // Navigate to prescription form with userId parameter
+                        onPressed: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => PrescriptionForm(userId: studentRequest['userId'])),
                           );
-                        }
+                        },
+                      ),
                     ),
                   ),
-                ),);
-
+                );
               },
             );
           }
@@ -195,4 +262,3 @@ void main() {
     home: StudentRequestsScreen(),
   ));
 }
-

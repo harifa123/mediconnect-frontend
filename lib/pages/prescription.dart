@@ -66,7 +66,7 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
             ),
             SizedBox(height: 20.0),
             TextFormField(
-              controller: medicineController,
+              controller: dosageController,
               decoration:ThemeHelper().textInputDecoration('Dosage', 'Enter Dosage'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -77,7 +77,7 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
             ),
             SizedBox(height: 20.0),
             TextFormField(
-              controller: medicineController,
+              controller: instructionsController,
               decoration:ThemeHelper().textInputDecoration('Instructions', 'Enter Instructions'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
