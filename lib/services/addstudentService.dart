@@ -14,11 +14,11 @@ class StudentService {
     );
 
     if (response.statusCode == 200) {
-      return 'Student added successfully';
+      return 'User added successfully';
     } else if (response.statusCode == 400) {
-      return 'Student already registered';
+      return 'User already registered';
     } else {
-      throw Exception('Failed to add student');
+      throw Exception('Failed to add User');
     }
   }
 }

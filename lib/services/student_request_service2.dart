@@ -37,4 +37,13 @@ class StudentRequestService {
       throw Exception('Failed to fetch requests');
     }
   }
+
+  Future<List<dynamic>> searchStudentRequestsByDisease(String disease) async {
+    final response = await http.get(Uri.parse('http://localhost:3006/api/student/filter?disease=$disease'));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to search student requests by disease $disease');
+    }
+  }
 }

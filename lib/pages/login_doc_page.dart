@@ -149,7 +149,7 @@ class _DocLoginPageState extends State<DocLoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => DocApp(),
+          builder: (context) => DoctorHomePage(),
         ),
       );
     } else {

@@ -83,6 +83,7 @@ flutter:
      - images/logo_letter_2_med.png
      - images/logo_letter_box_med.png
      - images/logo_letter_med.png
+     - images/images.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

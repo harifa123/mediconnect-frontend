@@ -85,10 +85,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
               SizedBox(height: 10,),
               TextFormField(
                 controller: _admissionNumberController,
-                decoration:ThemeHelper().textInputDecoration('Admission Number', 'Enter Admission Number'),
+                decoration:ThemeHelper().textInputDecoration('Admission Number/Employee Id', 'Enter Admission Number or Employee Id'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the admission number';
+                    return 'Please enter the admission number or Employee Id';
                   }
                   return null;
                 },

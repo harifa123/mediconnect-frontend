@@ -50,7 +50,7 @@ class _StudLoginPageState extends State<StudLoginPage> {
                       ),
                     ),
                     Text(
-                      'Student Login',
+                      'User Login',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 20,
@@ -135,7 +135,7 @@ class _StudLoginPageState extends State<StudLoginPage> {
                                   // Navigate to the bottom navigation page
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => MyApp()),
+                                    MaterialPageRoute(builder: (context) => StudentHomePage()),
                                   );
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(

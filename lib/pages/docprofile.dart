@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/ui_page_logins.dart';
 
 class DocProfilePage extends StatefulWidget {
   @override
@@ -26,6 +27,16 @@ class _DocProfilePageState extends State<DocProfilePage> {
           ),
         ),
         centerTitle: true,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => UiPage()),
+                  (route) => false,
+            );
+          },
+          child: Icon(Icons.arrow_back, color: Colors.white),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),

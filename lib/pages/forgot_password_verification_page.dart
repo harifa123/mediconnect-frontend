@@ -139,7 +139,7 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
                                 onPressed: _pinSuccess ? () {
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (context) => MyApp()
+                                          builder: (context) => StudentHomePage()
                                       ),
                                           (Route<dynamic> route) => false
                                   );

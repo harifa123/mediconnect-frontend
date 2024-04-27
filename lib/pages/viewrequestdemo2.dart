@@ -3,11 +3,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/common/theme_helper.dart';
 import 'package:flutter_login_ui/pages/doctor_profile_page.dart';
 import 'package:flutter_login_ui/pages/prescription.dart';
+import 'package:flutter_login_ui/pages/ui_page_logins.dart';
 import 'package:flutter_login_ui/services/student_request_service2.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+
+// Define StudentRequestsSearchDelegate here
+class StudentRequestsSearchDelegate extends SearchDelegate<String> {
+  final Function(String) searchByDisease;
+
+  StudentRequestsSearchDelegate({required this.searchByDisease});
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // Perform the search and display results here
+    return FutureBuilder<List<dynamic>>(
+      future: searchByDisease(query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          // Build UI to display search results
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final student = snapshot.data![index];
+              return ListTile(
+                title: Text("Name :"+student['name']),
+                subtitle: Text("AdmNo/EmpId :"+student['admissionNumber']),
+                onTap: () {
+                  // Handle tapping on search result
+                  // You can navigate to another page or perform any action here
+                },
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // Build UI to display search suggestions here
+    return Container();
+  }
+
+  @override
+  void showResults(BuildContext context) {
+    super.showResults(context);
+    // Call searchByDisease function with query to perform search
+    searchByDisease(query);
+  }
+}
 
 class StudentRequestsScreen extends StatefulWidget {
   @override
@@ -122,6 +196,18 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
     });
   }
 
+  // Function to search by disease
+  Future<List<dynamic>> _searchByDisease(String disease) async {
+    try {
+      final response = await StudentRequestService().searchStudentRequestsByDisease(disease);
+      return response;
+    } catch (e) {
+      print("Error searching student requests by disease $disease: $e");
+      return []; // Return an empty list in case of an error
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,11 +232,15 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white,),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>DocApp())); // Navigate back to the previous page
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => UiPage()),
+                  (route) => false,
+            );
           },
+          child: Icon(Icons.arrow_back, color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -165,8 +255,18 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
             icon: Icon(Icons.download),
             onPressed: () => _downloadPdf(),
           ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: StudentRequestsSearchDelegate(
+                  searchByDisease: _searchByDisease,
+                ),
+              );
+            },
+          ),
         ],
-
 
       ),
       body: FutureBuilder<List<dynamic>>(
@@ -199,7 +299,7 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Admission Number: ${studentRequest['admissionNumber']}',
+                          'AdmNo/EmpId: ${studentRequest['admissionNumber']}',
                           style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
                         ),
                         Text(

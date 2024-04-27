@@ -70,6 +70,7 @@ class _StudentDetailsPageState extends State<StudentDetailsPage> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
+        width: 400,
         height: 350,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -87,15 +88,15 @@ class _StudentDetailsPageState extends State<StudentDetailsPage> {
               ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Name: ${_student!.name ?? 'N/A'}', style: TextStyle(
+              Text('Name:-\n ${_student!.name ?? 'N/A'}', style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),),
-              Text('Admission Number: ${_student!.admissionNumber ?? 'N/A'}',
+              Text('AdmNo/EmpId:-\n ${_student!.admissionNumber ?? 'N/A'}',
                 style: TextStyle(fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),),
-              Text('Email: ${_student!.email ?? 'N/A'}', style: TextStyle(
+              Text('Email:-\n ${_student!.email ?? 'N/A'}', style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),),

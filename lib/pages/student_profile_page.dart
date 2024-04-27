@@ -10,22 +10,22 @@ import 'package:flutter_login_ui/pages/viewPrescription.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(StudentHomePage());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Doctor App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StudentHomePage(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Doctor App',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: StudentHomePage(),
+//     );
+//   }
+// }
 class StudentHomePage extends StatefulWidget {
   @override
   _StudentHomePageState createState() => _StudentHomePageState();
@@ -38,7 +38,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   void initState() {
     super.initState();
-    _pages = [StudentDetailsPage(), StudentRequestPage(), ViewPrescription()];
+    _pages = [StudentDetailsPage(), AppointmentScreen(), ViewPrescription()];
   }
 
   void _onItemTapped(int index) {

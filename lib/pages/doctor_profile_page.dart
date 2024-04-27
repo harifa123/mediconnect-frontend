@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/docprofile.dart';
+import 'package:flutter_login_ui/pages/doctorLeave.dart';
 import 'package:flutter_login_ui/pages/studentrequestspage.dart';
 import 'package:flutter_login_ui/pages/studprescription.dart';
 import 'package:flutter_login_ui/pages/AppointmentDetails.dart';
@@ -10,22 +11,22 @@ import 'package:flutter_login_ui/pages/viewrequests.dart';
 // import 'package:flutter_login_ui/pages/prescriptionformpage.dart'; // Import PrescriptionFormPage
 
 void main() {
-  runApp(DocApp());
+  runApp(DoctorHomePage());
 }
 
-class DocApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Doctor App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: DoctorHomePage(),
-    );
-  }
-}
+// class DocApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Doctor App',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: DoctorHomePage(),
+//     );
+//   }
+// }
 
 class DoctorHomePage extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   static  List<Widget> _pages = <Widget>[
     DocProfilePage(),
     StudentRequestsScreen(),
+    LeaveApplicationForm(),
     // ViewRequestPage()// Add PrescriptionFormPage here
     // Add ProfilePage widget here
   ];
@@ -68,16 +70,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           ),
         ),
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => UiPage()),
-                  (route) => false,
-            );
-          },
-          child: Icon(Icons.arrow_back, color: Colors.white),
-        ),
       ),
       body: Center(
         child: _pages.elementAt(_selectedIndex),
@@ -93,6 +85,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.request_page),
             label: 'Requests',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.request_page),
+            label: 'Leave Request',
           ),
         ],
       ),

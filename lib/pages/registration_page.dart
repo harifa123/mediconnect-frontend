@@ -120,10 +120,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         Container(
                           child: TextFormField(
                             controller: admissionNumberController,
-                            decoration: ThemeHelper().textInputDecoration('Admission Number', 'Enter your admission number'),
+                            decoration: ThemeHelper().textInputDecoration('Admission Number/Employee Id', 'Enter your admission number or Employee Id'),
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return 'Enter your admission number';
+                                return 'Enter your admission number or Employee Id';
                               }
                               return null;
                             },
