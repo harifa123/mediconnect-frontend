@@ -14,11 +14,11 @@ IDE: Android Studio v4.2.2 provided by Google.
 OS: Windows 10
 
 ## Screenshots
-<img src="![userlogin](https://github.com/harifa123/mediconnect-frontend/assets/122691654/2af6a822-7dce-40d9-aeb5-8c94e4751460)">
-<img src="![doclogin](https://github.com/harifa123/mediconnect-frontend/assets/122691654/65a7e169-1d20-483f-be69-0c3a8d1c5555)">
-<img src="![docvieweerequests 2](https://github.com/harifa123/mediconnect-frontend/assets/122691654/83b02cd1-b64d-4520-8fb7-f37cf60cad90)">
-<img src="![book_appoint_2](https://github.com/harifa123/mediconnect-frontend/assets/122691654/d1eac8af-15cb-4f0e-b107-c50cf7455b64)">
-<img src="![book_appoint](https://github.com/harifa123/mediconnect-frontend/assets/122691654/6d981de4-b7fb-4244-8584-5fb4fada4489)">
+![userlogin](https://github.com/harifa123/mediconnect-frontend/assets/122691654/2af6a822-7dce-40d9-aeb5-8c94e4751460)
+![doclogin](https://github.com/harifa123/mediconnect-frontend/assets/122691654/65a7e169-1d20-483f-be69-0c3a8d1c5555)
+![docvieweerequests 2](https://github.com/harifa123/mediconnect-frontend/assets/122691654/83b02cd1-b64d-4520-8fb7-f37cf60cad90)
+![book_appoint_2](https://github.com/harifa123/mediconnect-frontend/assets/122691654/d1eac8af-15cb-4f0e-b107-c50cf7455b64)
+![book_appoint](https://github.com/harifa123/mediconnect-frontend/assets/122691654/6d981de4-b7fb-4244-8584-5fb4fada4489)
 
 
 ## App UI
